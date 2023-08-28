@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: Lato;
+  padding: 0;
+  margin: 0;
+}
+
+.form-heading {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.form-container,
+.submit-result {
+  margin: 2rem 4rem;
+}
+
+.submit-result {
+  font-family: "Courier New", Courier, monospace;
+  word-break: break-word;
+  line-height: 2rem;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #d2d2d2;
+  border-radius: 0;
+  padding: 0;
+  font-size: 1.65rem;
+  margin: 2rem 0;
+  line-height: 3rem;
+}
+
+.form-control,
+.form-control::placeholder {
+  letter-spacing: 0.05rem;
+}
+
+.form-control::placeholder {
+  color: #888;
+}
+
+.form-control:focus {
+  outline: 1px solid transparent;
+  border-bottom-color: black;
+}
+
+.submit-btn {
+  line-height: 4rem;
+  display: block;
+  width: 100%;
+  border: 0.2rem solid black;
+  margin-top: 4rem;
+  background-color: white;
+  border-radius: 2.5rem;
+  font-family: inherit;
+  color: black;
+  font-size: 1.45rem;
+  transition: background-color 300ms ease, color 300ms ease,
+    box-shadow 300ms ease, font-weight 300ms ease;
+  cursor: pointer;
+  will-change: box-shadow, text-shadow, text-transform;
+  box-shadow: 0 0 0 1rem #fff;
+  letter-spacing: 0.032rem;
+}
+
+.submit-btn:focus {
+  outline: 1px solid transparent;
+}
+
+.submit-btn:hover,
+.submit-btn:focus {
+  text-shadow: 0 0 1rem rgba(255, 255, 255, 0.8);
+  color: white;
+  font-weight: 600;
+  background-color: black;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.4);
+}
