@@ -1,10 +1,11 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './style.css';
 import { useForm } from 'react-hook-form';
 import Terser from 'terser';
+import LongTextComponent from './components/LongTextComponent';
 
-function minifyJavaScript(inputCode) {
+async function minifyJavaScript(inputCode) {
   const options = {
     // Your custom minification options go here
     mangle: {
@@ -18,7 +19,7 @@ function minifyJavaScript(inputCode) {
     },
   };
 
-  const minifiedCode = Terser.minify(inputCode, options);
+  const minifiedCode = await Terser.minify(inputCode, options);
   if (minifiedCode.error) {
     console.log(minifiedCode.error);
     throw minifiedCode.error;
@@ -47,6 +48,7 @@ function simulateTyping(inputElement, text) {
 
 const App: FC = () => {
   const [data, setData] = useState(null);
+  const [minified, setMinified] = useState(null);
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => setData(data);
@@ -82,11 +84,18 @@ const App: FC = () => {
     return scripts;
   }, [extracted]);
 
+  useEffect(() => {
+    async function run() {
+      const ret = await minifyJavaScript(scripts.join(';'));
+      setMinified(`javascript:${ret}`);
+    }
+    run();
+  }, [scripts]);
+
   return (
     <React.Fragment>
       {/* <pre>{JSON.stringify(extracted, null, 2)}</pre> */}
-      {scripts && scripts.map((s) => <pre>{s}</pre>)}
-      <pre>{`javascript:${minifyJavaScript(simulateTyping.toString())}`}</pre>
+      {/* {scripts && scripts.map((s, i) => <pre key={i}>{s}</pre>)} */}
       <form onSubmit={handleSubmit(onSubmit)} className="form-container">
         <h1 className="form-heading">
           Check balanace for Shopback Activ prepaid card
@@ -99,6 +108,14 @@ const App: FC = () => {
           <li>
             Select and copy the text in black card. It should includes the text
             "CARD: .... PIN: ... EXPIRY: ...
+          </li>
+          <li>Click "Submit"</li>
+          <li>
+            Open{' '}
+            <a href="https://www.cardbalance.com.au/">
+              https://www.cardbalance.com.au/
+            </a>{' '}
+            and run the script in developer console
           </li>
         </ol>
         <input
@@ -148,9 +165,16 @@ const App: FC = () => {
         <button className="submit-btn" type="submit">
           Submit
         </button>
-      </form>
 
-      {data && <p className="submit-result">{JSON.stringify(data)}</p>}
+        {extracted && minified && (
+          <>
+            {extracted && (
+              <p className="submit-result">{JSON.stringify(extracted)}</p>
+            )}
+            <LongTextComponent longText={minified} />
+          </>
+        )}
+      </form>
     </React.Fragment>
   );
 };
